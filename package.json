@@ -11,9 +11,6 @@
     "netlify-lambda": "^2.0.16",
     "serverless-http": "^3.2.0",
     "twilio": "^3.77.3",
-    "youtube-dl": "^3.5.0",
-    "youtube-dl-exec": "^2.4.6",
-    "yt-search": "^2.10.4",
     "ytdl-core": "^4.11.5"
   },
   "scripts": {

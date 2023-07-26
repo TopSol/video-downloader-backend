@@ -1,10 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const serverless = require("serverless-http");
-// const youtubedl = require("youtube-dl-exec");
-// const youtubedl = require("youtube-dl");
-// const ytSearch = require("yt-search");
-// const { exec } = require("youtube-dl-exec");
+
 const ytdl = require("ytdl-core");
 
 const app = express();
@@ -12,7 +9,10 @@ const router = express.Router();
 
 app.use(cors());
 app.use(express.json());
+const bodyParser = require('body-parser');
 
+// Middleware to parse JSON data from the request body
+app.use(bodyParser.json());
 router.get("/parse-url", async (req, res) => {
   // youtubedl("https://www.youtube.com/watch?v=do3teoiyFho", {
   //   format: "bestvideo+bestaudio",
@@ -32,22 +32,15 @@ router.get("/parse-url", async (req, res) => {
   //   console.log(output?.requested_formats);
 
   // });
-
+  const { url } = req.body;
   try {
-    const info = await ytdl.getInfo(
-      "https://www.youtube.com/watch?v=gLuhrhEfQBc"
-    );
-
-    console.log(
-      "formats are here",
-      info?.formats
-        .filter(
-          (item) => item?.audioCodec !== null && item?.qualityLabel !== null
-        )
-        .map((item) => ({
-          quality: item?.qualityLabel,
-        }))
-    );
+    const info = await ytdl.getInfo(url);
+    const formats = info?.formats
+      .filter(
+        (item) => item?.audioCodec !== null && item?.qualityLabel !== null
+      )
+    console.log("formats are here",formats );
+    res.send(formats.map(item=>{return {url:item.url}}));
 
     // Find the best format that combines both video and audio (highest audio quality available)
     const bestFormat = ytdl.chooseFormat(info.formats, {
@@ -63,7 +56,6 @@ router.get("/parse-url", async (req, res) => {
     console.error("Error getting URL:", error.message);
   }
 
-  res.send("hello");
 });
 
 router.get("/", (req, res) => {

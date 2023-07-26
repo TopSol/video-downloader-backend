@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const serverless = require("serverless-http");
 // const youtubedl = require("youtube-dl-exec");
 // const youtubedl = require("youtube-dl");
 // const ytSearch = require("yt-search");
@@ -7,11 +8,12 @@ const cors = require("cors");
 const ytdl = require("ytdl-core");
 
 const app = express();
+const router = express.Router();
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/parse-url", async (req, res) => {
+router.get("/parse-url", async (req, res) => {
   // youtubedl("https://www.youtube.com/watch?v=do3teoiyFho", {
   //   format: "bestvideo+bestaudio",
   //   dumpSingleJson: true,
@@ -64,6 +66,15 @@ app.get("/parse-url", async (req, res) => {
   res.send("hello");
 });
 
-app.listen(8080, () => {
-  console.log("server run");
+router.get("/", (req, res) => {
+  res.json({
+    hello: "hi!"
+  });
 });
+
+app.use(`/.netlify/functions/api`, router);
+
+module.exports = app;
+module.exports.handler = serverless(app);
+
+

@@ -15,12 +15,15 @@ router.get("/parse-url", async (req, res) => {
   const { url } = req.query;
   try {
     const info = await ytdl.getInfo(url);
+    console.log(info?.videoDetails?.title);
+    const videoDetails = info?.videoDetails
     const formats = info?.formats
       .filter(
-        (item) => item?.audioCodec !== null && item?.qualityLabel !== null
+        (item) => item?.audioCodec !== null && item?.codecs !== 'opus' 
+        
       )
     console.log("formats are here",formats );
-    res.send(formats);
+    res.send({formats,videoDetails});
 
   } catch (error) {
     console.error("Error getting URL:", error.message);

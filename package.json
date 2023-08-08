@@ -10,8 +10,10 @@
     "expressjs": "^1.0.1",
     "ffmpeg-static": "^5.1.0",
     "netlify-lambda": "^2.0.16",
+    "node": "^20.5.0",
     "serverless-http": "^3.2.0",
     "twilio": "^3.77.3",
+    "youtube-dl-exec": "^2.4.6",
     "ytdl-core": "^4.11.5"
   },
   "scripts": {

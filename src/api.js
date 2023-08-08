@@ -3,6 +3,7 @@ const cors = require("cors");
 const serverless = require("serverless-http");
 
 const ytdl = require("ytdl-core");
+const youtubedl = require('youtube-dl-exec');
 
 const app = express();
 const router = express.Router();
@@ -22,7 +23,18 @@ router.get("/parse-url", async (req, res) => {
         (item) => item?.audioCodec !== null && item?.codecs !== 'opus' 
         
       )
-    console.log("formats are here",formats );
+    // console.log("formats are here",formats );
+//     youtubedl(url, {
+//   dumpSingleJson: true,
+//   noCheckCertificates: true,
+//   noWarnings: true,
+//   preferFreeFormats: true,
+//   addHeader: [
+//     'referer:youtube.com',
+//     'user-agent:googlebot'
+//   ]
+
+// }).then(output => console.log(output))
     res.send({formats,videoDetails});
 
   } catch (error) {
